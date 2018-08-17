@@ -35,8 +35,42 @@ class DNN():
         The multiplication factor of 0.01 is to prevent gradient vanishing.
         """
         self.params = {}
-        for l in range(1, (self.L+1)):
+        for l in range(1, (self.L + 1)):
             self.params['W' + str(l)] = 0.01 * np.random.randn(self.layer_dims[l], self.layer_dims[l-1])
+            self.params['b' + str(l)] = np.zeros((self.layer_dims[l], 1))
+    
+    def _initialize_params_he(self):
+        """
+        He initialization.
+        """
+        self.params = {}
+        for l in range(1, (self.L + 1)):
+            self.params['W' + str(l)] = (2 / self.layer_dims[l-1])**0.5 * \
+            np.random.randn(self.layer_dims[l], self.layer_dims[l-1])
+            self.params['b' + str(l)] = np.zeros((self.layer_dims[l], 1))
+    
+    def _initialize_params_xavier(self):
+        """
+        He initialization.
+        """
+        self.params = {}
+        for l in range(1, (self.L + 1)):
+            self.params['W' + str(l)] = (1 / self.layer_dims[l-1])**0.5 * \
+            np.random.randn(self.layer_dims[l], self.layer_dims[l-1])
+            self.params['b' + str(l)] = np.zeros((self.layer_dims[l], 1))
+    
+    def _initialize_params_mix(self):
+        """
+        He initialization.
+        """
+        self.params = {}
+        for l in range(1, (self.L + 1)):
+            if self.layer_activations[l] == 'relu':
+                x = 2
+            else:
+                x = 1
+            self.params['W' + str(l)] = (x / self.layer_dims[l-1])**0.5 * \
+            np.random.randn(self.layer_dims[l], self.layer_dims[l-1])
             self.params['b' + str(l)] = np.zeros((self.layer_dims[l], 1))
     
     def _forward(self):
@@ -137,7 +171,7 @@ class DNN():
         Y = Y.reshape(1, m)
         self.X = X
         self.Y = Y
-        self._initialize_params()
+        self._initialize_params_mix()
         costs = []
         # Loop to perform forward propagation, backward propagataion and 
         # gradient descent num_iter times.
