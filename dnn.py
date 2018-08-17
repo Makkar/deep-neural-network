@@ -51,7 +51,7 @@ class DNN():
     
     def _initialize_params_xavier(self):
         """
-        He initialization.
+        Xavier initialization.
         """
         self.params = {}
         for l in range(1, (self.L + 1)):
@@ -61,7 +61,7 @@ class DNN():
     
     def _initialize_params_mix(self):
         """
-        He initialization.
+        He or Xavier initialization.
         """
         self.params = {}
         for l in range(1, (self.L + 1)):
